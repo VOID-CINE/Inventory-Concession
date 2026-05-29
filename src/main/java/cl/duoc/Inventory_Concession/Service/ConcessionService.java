@@ -1,9 +1,9 @@
 package cl.duoc.Inventory_Concession.Service;
 
 import cl.duoc.Inventory_Concession.Client.InventarioCliente;
-import cl.duoc.Inventory_Concession.DTO.ConcessionRequestDTO;
+import cl.duoc.Inventory_Concession.DTO.ConcessionDTO;
 import cl.duoc.Inventory_Concession.DTO.InventoryDTO;
-import cl.duoc.Inventory_Concession.Exception.StockInsuficienteException;
+import cl.duoc.Inventory_Concession.Exeption.StockInsuficienteException;
 import cl.duoc.Inventory_Concession.Model.Concession;
 import cl.duoc.Inventory_Concession.Repository.ConcessionRepository;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class ConcessionService {
     }
 
     @Transactional
-    public Concession realizarVenta(ConcessionRequestDTO dto) {
+    public Concession realizarVenta(ConcessionDTO dto) {
         log.info("Procesando negocio de venta para artículo: {}", dto.getNombre());
 
         // 1. Consultar el stock real al microservicio remoto usando WebClient
@@ -37,8 +37,8 @@ public class ConcessionService {
         }
 
         // 2. Regla de negocio: Validar si alcanza la mercancía
-        if (itemInventario.getStock() < dto.getCantidad()) {
-            throw new StockInsuficienteException("Stock insuficiente. Disponibles: " + itemInventario.getStock());
+        if (itemInventario.getStockCont() < dto.getCantidad()) {
+            throw new StockInsuficienteException("Stock insuficiente. Disponibles: " + itemInventario.getStockCont());
         }
 
         // 3. Modificar el stock remotamente
@@ -64,7 +64,7 @@ public class ConcessionService {
     }
 
     @Transactional
-    public Concession actualizarVenta(Long id, ConcessionRequestDTO dto) {
+    public Concession actualizarVenta(Long id, ConcessionDTO dto) {
         Concession existente = obtenerVentaPorId(id);
         existente.setNombre(dto.getNombre());
         existente.setCantidad(dto.getCantidad());

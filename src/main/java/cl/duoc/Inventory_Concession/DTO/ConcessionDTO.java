@@ -3,7 +3,11 @@ package cl.duoc.Inventory_Concession.DTO;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class ConcessionDTO {
     @NotBlank(message = "El nombre del producto/combo es obligatorio")
     private String nombre;

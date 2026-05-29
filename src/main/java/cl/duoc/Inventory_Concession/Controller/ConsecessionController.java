@@ -13,10 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/concessions")
 public class ConsecessionController {
-    private final ConcessionService concessionService;
+    
+    private final ConcessionService concessionService = null;
     //Crear venta
     @PostMapping
-    public ResponseEntity<Concession> realizarVenta(@Valid @RequestBody ConcessionRequestDTO dto) {
+    public ResponseEntity<Concession> realizarVenta(@Valid @RequestBody ConcessionDTO dto) {
         Concession nuevaVenta = concessionService.realizarVenta(dto);
         return new ResponseEntity<>(nuevaVenta, HttpStatus.CREATED);
     }
@@ -35,7 +36,7 @@ public class ConsecessionController {
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<Concession> actualizarVenta(@PathVariable Long id, @Valid @RequestBody ConcessionRequestDTO dto) {
+    public ResponseEntity<Concession> actualizarVenta(@PathVariable Long id, @Valid @RequestBody ConcessionDTO dto) {
         return ResponseEntity.ok(concessionService.actualizarVenta(id, dto));
     }
 
